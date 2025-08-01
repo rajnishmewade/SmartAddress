@@ -1,15 +1,137 @@
-﻿@{
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html ng-app="addressApp" ng-controller="AddressController">
+<head>
+    <meta charset="utf-8" />
+    <title>Smart Address</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="~/Scripts/Address/addressController.js"></script>
+
+</head>
+<body>
+    @*Address Form*@
+    <div class="container" id="addAddress">
+        <h2 class="mb-4 text-primary">Add Your Address</h2>
+        <form ng-submit="saveAddress()" class="p-4 border rounded shadow">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label>District</label>
+                    <select class="form-control" ng-model="formData.DistID" ng-options="d.DistID as d.DistrictName for d in districts" ng-change="loadCities()">
+                        <option value="">-- Select District --</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label>City</label>
+                    <select class="form-control" ng-model="formData.CityID" ng-options="c.CityID as c.CityName for c in cities">
+                        <option value="">-- Select City --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label>Street Name</label>
+                <input type="text" class="form-control" ng-model="formData.StreetName" required />
+            </div>
+
+            <div class="mb-3">
+                <label>Building Name</label>
+                <input type="text" class="form-control" ng-model="formData.BuildingName" />
+            </div>
+
+            <div class="mb-3">
+                <label>Landmark</label>
+                <input type="text" class="form-control" ng-model="formData.LandMark" />
+            </div>
+
+            <div class="mb-3">
+                <label>Full Address</label>
+                <textarea class="form-control" ng-model="formData.FullAddress" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label>Pin Code</label>
+                <input type="text" class="form-control" ng-model="formData.PinCode" required />
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Save Address</button>
+                <button type="button" class="btn btn-secondary" ng-click="resetForm()">Clear</button>
+                <button class="btn btn-success" ng-click="goToSearchPage()">🔍 Search Address</button>
+            </div>
+
+        </form>
+    </div>
+
+
+    @*ye search filter ke liye hai mamla*@
+
+    <div class="container" id="searchAddress" ng-show="showSearchPage">
+        <h2 class="mb-4 text-primary">Search Address</h2>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label>Search by District</label>
+                <select class="form-control" ng-model="searchDistID" ng-options="d.DistID as d.DistrictName for d in districts">
+                    <option value="">-- Select District --</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label>Search by City (Optional)</label>
+                <select class="form-control" ng-model="searchCityID" ng-options="c.CityID as c.CityName for c in cities">
+                    <option value="">-- Select City --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3 text-center">
+            <button class="btn btn-primary" ng-click="searchAddresses()">Search</button>
+        </div>
+
+        <div class="table-responsive" ng-if="searchResults.length > 0">
+            <h5 class="text-success">Results:</h5>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Street Name</th>
+                        <th>Building Name</th>
+                        <th>Landmark</th>
+                        <th>Full Address</th>
+                        <th>Pin Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="addr in searchResults">
+                        <td>{{addr.StreetName}}</td>
+                        <td>{{addr.BuildingName}}</td>
+                        <td>{{addr.LandMark}}</td>
+                        <td>{{addr.FullAddress}}</td>
+                        <td>{{addr.PinCode}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<!--@{
     Layout = null;
 }
 <!DOCTYPE html>
 <html ng-app="addressApp" ng-controller="AddressController">
 <head>
     <title>Add Address</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>-->
+@* Included external angular.js code here  *@
 
-    @* Included external angular.js code here  *@
-
-    <script src="~/Scripts/Address/addressController.js"></script>
+<!--<script src="~/Scripts/Address/addressController.js"></script>
 </head>
 <body>
     <h2>Add Address</h2>
