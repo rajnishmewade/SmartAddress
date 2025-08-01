@@ -1,0 +1,45 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html ng-app="addressApp" ng-controller="AddressController">
+<head>
+    <title>Add Address</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    @* Included external angular.js code here  *@
+
+    <script src="~/Scripts/Address/addressController.js"></script>
+</head>
+<body>
+    <h2>Add Address</h2>
+    <form ng-submit="saveAddress()">
+        <label>District:</label>
+        <select ng-model="formData.DistID" ng-options="d.DistID as d.DistrictName for d in districts" ng-change="loadCities()">
+            <option value="">--Select District--</option>
+        </select><br><br>
+
+        <label>City:</label>
+        <select ng-model="formData.CityID" ng-options="c.CityID as c.CityName for c in cities">
+            <option value="">--Select City--</option>
+        </select><br><br>
+
+        <label>Street:</label>
+        <input type="text" ng-model="formData.StreetName" /><br><br>
+
+        <label>Building:</label>
+        <input type="text" ng-model="formData.BuildingName" /><br><br>
+
+        <label>Landmark:</label>
+        <input type="text" ng-model="formData.LandMark" /><br><br>
+
+        <label>Full Address:</label>
+        <textarea ng-model="formData.FullAddress"></textarea><br><br>
+
+        <label>Pin Code:</label>
+        <input type="text" ng-model="formData.PinCode" /><br><br>
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
