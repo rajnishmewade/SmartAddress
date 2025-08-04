@@ -1,0 +1,119 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html ng-app="addressApp" ng-controller="AddressController">
+<head>
+    <meta charset="utf-8" />
+    <title>Search Address</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="~/Scripts/Address/addressController.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .search-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container search-container">
+        <h2 class="text-center text-primary">Search Address</h2>
+
+        <!-- Filter Section -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">District</label>
+                <select class="form-select" ng-model="formData.DistID"
+                        ng-options="d.DistID as d.DistrictName for d in districts"
+                        ng-change="loadCities()">
+                    <option value="">-- Select District --</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">City</label>
+                <select class="form-select" ng-model="formData.CityID"
+                        ng-options="c.CityID as c.CityName for c in cities">
+                    <option value="">-- Select City --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-2">
+                <button class="btn btn-success w-100" ng-click="searchAddresses()">
+                    Search
+                </button>
+            </div>
+            <div class="col-md-6 mb-2">
+                <a href="/Address/Index" class="btn btn-primary w-100">
+                    Add New Address
+                </a>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="table-responsive" ng-if="results.length > 0">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>District</th>
+                        <th>City</th>
+                        <th>Street</th>
+                        <th>Building</th>
+                        <th>Landmark</th>
+                        <th>Full Address</th>
+                        <th>PinCode</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in results">
+                        <td>{{$index + 1}}</td>
+                        <td>{{item.DistrictName}}</td>
+                        <td>{{item.CityName}}</td>
+                        <td>{{item.StreetName}}</td>
+                        <td>{{item.BuildingName}}</td>
+                        <td>{{item.LandMark}}</td>
+                        <td>{{item.FullAddress}}</td>
+                        <td>{{item.PinCode}}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" ng-click="deleteAddress(item.AddressID)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- No Records Message -->
+        <div class="alert alert-warning text-center mt-4" ng-if="searchPerformed && results.length === 0">
+            No records found.
+        </div>
+    </div>
+
+</body>
+</html>
+

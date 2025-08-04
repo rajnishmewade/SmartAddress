@@ -2,23 +2,19 @@
 
 app.controller("AddressController", function ($scope, $http) {
     $scope.formData = {};
-
-    //$scope.showForm = false;
-    //$scope.imageUrl = "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
-    //$scope.imageUrl = "https://source.unsplash.com/1600x400/?city,address&sig=" + Math.random();
-
+    $scope.results = [];
     $scope.districts = [];
     $scope.cities = [];
+    $scope.searchPerformed = false;
 
-    // serach ke liye 
-    $scope.showSearchPage = false;
-
+    // Navigate to search page (not needed anymore since both are merged)
     $scope.goToSearchPage = function () {
-        $scope.showSearchPage = true;
+        window.location.href = '/Address/Search';
     };
 
-    $scope.searchResults = [];
+    $scope.goToAddAddress = function () {
+        window.location.href = '/Address/Index';
+    };
 
     // Load districts on page load
     $http.get('/Address/GetDistricts').then(function (res) {
@@ -31,6 +27,8 @@ app.controller("AddressController", function ($scope, $http) {
             $http.get('/Address/GetCitiesByDistrict/' + $scope.formData.DistID).then(function (res) {
                 $scope.cities = res.data;
             });
+        } else {
+            $scope.cities = [];
         }
     };
 
@@ -45,19 +43,30 @@ app.controller("AddressController", function ($scope, $http) {
             });
     };
 
-    /*$scope.searchAddresses = function () {
-        let distID = $scope.searchDistID;
-        let cityID = $scope.searchCityID;
+    // Search addresses
+    $scope.searchAddresses = function () {
+        const url = '/Address/SearchAddresses?distID=' + ($scope.formData.DistID || '') + '&cityID=' + ($scope.formData.CityID || '');
+        //console.log("Calling:", url); // Optional debug
+        $http.get(url).then(function (res) {
+            $scope.results = res.data;
+            $scope.searchPerformed = true;
+        }, function (err) {
+            //$scope.searchPerformed = true;
+            console.error(err);
+        });
+    };
 
-        let url = '/api/Address/Search?distID=' + (distID || '') + '&cityID=' + (cityID || '');
-
-        $http.get(url)
-            .then(function (response) {
-                $scope.searchResults = response.data;
-            })
-            .catch(function (error) {
-                alert("Search failed: " + error.data.message || "Server error");
+    // Delete address
+    $scope.deleteAddress = function (id) {
+        if (confirm("Are you sure you want to delete this address?")) {
+            $http.post('/Address/DeleteAddress', { id: id }).then(function (res) {
+                if (res.data.success) {
+                    alert("Deleted successfully!");
+                    $scope.searchAddresses(); // refresh result
+                } else {
+                    alert("Delete failed!");
+                }
             });
-    };*/
-
+        }
+    };
 });
