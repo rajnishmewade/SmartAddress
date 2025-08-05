@@ -88,9 +88,9 @@ namespace SmartAddress.Controllers
                     .Include(a => a.City)
                     .Select(a => new AddressDetailDTO
                     {
-                        // AddressID = a.AddressID,
-                        // DistID = a.DistID,
-                        // CityID = a.CityID,
+                        AddressID = a.AddressID,
+                        //DistID = a.DistID,
+                        //CityID = a.CityID,
                         DistrictName = a.District.DistrictName,
                         CityName = a.City.CityName,
                         StreetName = a.StreetName,
@@ -121,5 +121,6 @@ namespace SmartAddress.Controllers
                 return Json(new { success = false });
             }
         }
+
     }
 }

@@ -18,6 +18,7 @@ namespace SmartAddress
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Address", action = "Index", id = UrlParameter.Optional }
             );
+
         }
     }
 }

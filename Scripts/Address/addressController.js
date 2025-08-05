@@ -46,7 +46,7 @@ app.controller("AddressController", function ($scope, $http) {
     // Search addresses
     $scope.searchAddresses = function () {
         const url = '/Address/SearchAddresses?distID=' + ($scope.formData.DistID || '') + '&cityID=' + ($scope.formData.CityID || '');
-        //console.log("Calling:", url); // Optional debug
+        //console.log("Calling:", url); 
         $http.get(url).then(function (res) {
             $scope.results = res.data;
             $scope.searchPerformed = true;
@@ -56,17 +56,18 @@ app.controller("AddressController", function ($scope, $http) {
         });
     };
 
-    // Delete address
     $scope.deleteAddress = function (id) {
         if (confirm("Are you sure you want to delete this address?")) {
-            $http.post('/Address/DeleteAddress', { id: id }).then(function (res) {
+            $http.post('/Address/DeleteAddress?id=' + id).then(function (res) {
                 if (res.data.success) {
                     alert("Deleted successfully!");
-                    $scope.searchAddresses(); // refresh result
+                    $scope.searchAddresses();
                 } else {
                     alert("Delete failed!");
                 }
             });
         }
     };
+
+
 });

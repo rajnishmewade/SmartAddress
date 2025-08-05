@@ -1,90 +1,108 @@
 ﻿@{
-    Layout = null;
-}
-<!DOCTYPE html>
-<html ng-app="addressApp" ng-controller="AddressController">
-<head>
-    <meta charset="utf-8" />
-    <title>Smart Address</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="~/Scripts/Address/addressController.js"></script>
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
+        Layout = null;
+    }
+    <!DOCTYPE html>
+    <html ng-app="addressApp" ng-controller="AddressController">
+    <head>
+        <meta charset="utf-8" />
+        <title>Smart Address</title>
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script src="~/Scripts/Address/addressController.js"></script>
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
 
-        .form-container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
+            .form-container {
+                max-width: 1000px;
+                margin: 50px auto;
+                background: #ffffff;
+                padding: 50px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
 
-        h2 {
-            font-weight: 600;
-            margin-bottom: 30px;
-        }
-    </style>
-</head>
-<body>
+            h2 {
+                font-weight: 600;
+                margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
 
-    <div class="container form-container">
-        <h2 class="text-center text-primary">Add Your Address</h2>
+        <div class="container form-container">
+            <h2 class="text-center text-primary">Add Your Address</h2>
 
-        <form ng-submit="saveAddress()">
+            <form name="addressForm" ng-submit="saveAddress()" >
 
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">District</label>
-                    <select class="form-select" ng-model="formData.DistID" ng-options="d.DistID as d.DistrictName for d in districts" ng-change="loadCities()" required>
-                        <option value="">-- Select District --</option>
-                    </select>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">District
+                            <span style="color:red">*</span>
+                        </label>
+                        <select class="form-select" ng-model="formData.DistID" ng-options="d.DistID as d.DistrictName for d in districts" ng-change="loadCities()" required>
+                            <option value="">-- Select District --</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">City
+                            <span style="color:red">*</span>
+                        </label>
+                        <select class="form-select" ng-model="formData.CityID" ng-options="c.CityID as c.CityName for c in cities" required>
+                            <option value="">-- Select City --</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">City</label>
-                    <select class="form-select" ng-model="formData.CityID" ng-options="c.CityID as c.CityName for c in cities" required>
-                        <option value="">-- Select City --</option>
-                    </select>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Street Name
+                            <span style="color:red">*</span>
+                        </label>
+                        <input type="text" class="form-control" ng-model="formData.StreetName" required maxlength="50" placeholder="Enter Street Name in 50 words only"/>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Building Name</label>
+                        <input type="text" class="form-control" ng-model="formData.BuildingName" maxlength="20" placeholder="Enter your building name"/>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label">Street Name</label>
-                <input type="text" class="form-control" ng-model="formData.StreetName" required />
-            </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Landmark
+                            <small style="color:red">*</small>
+                        </label>
+                        <input type="text" class="form-control" ng-model="formData.LandMark" required maxlength="50" placeholder="Enter nearby famous place in 50 words only"/>
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Building Name</label>
-                <input type="text" class="form-control" ng-model="formData.BuildingName" />
-            </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Pin Code
+                            <small style="color:red">*</small>
+                        </label>
+                        <input type="text" class="form-control" ng-model="formData.PinCode" pattern="^4[4-9][0-9]{4}" required 
+                               placeholder="Pincode must start with 45 to 49 and be 6 digits long"/>
+                    </div>
+                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Landmark</label>
-                <input type="text" class="form-control" ng-model="formData.LandMark" />
-            </div>
+                <div class="row mb-3">
+                    <div class="col-md">
+                        <label class="form-label">Full Address
+                            <span style="color:red">*</span>
+                        </label>
+                        <textarea class="form-control" ng-model="formData.FullAddress" rows="3" required maxlength="100" placeholder="Enter your full address in maximum 100 words"></textarea>
+                    </div>   
+                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Full Address</label>
-                <textarea class="form-control" ng-model="formData.FullAddress" rows="3" required></textarea>
-            </div>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="submit" class="btn btn-primary px-4" >Save Address</button>
+                    <button type="button" class="btn btn-secondary px-4" ng-click="resetForm()">Clear</button>
+                    <a href="/Address/Search" class="btn btn-success px-4">Go to Search Page</a>
+                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Pin Code</label>
-                <input type="text" class="form-control" ng-model="formData.PinCode" required />
-            </div>
-
-            <div class="d-flex justify-content-center gap-3 mt-4">
-                <button type="submit" class="btn btn-primary px-4">Save Address</button>
-                <button type="button" class="btn btn-secondary px-4" ng-click="resetForm()">Clear</button>
-                <a href="/Address/Search" class="btn btn-success px-4">Go to Search Page</a>
-            </div>
-
-        </form>
-    </div>
-
-</body>
-</html>
+            </form>
+        </div>
+    </body>
+    </html>
