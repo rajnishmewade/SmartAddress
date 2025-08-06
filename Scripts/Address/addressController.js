@@ -7,7 +7,6 @@ app.controller("AddressController", function ($scope, $http) {
     $scope.cities = [];
     $scope.searchPerformed = false;
 
-    // Navigate to search page (not needed anymore since both are merged)
     $scope.goToSearchPage = function () {
         window.location.href = '/Address/Search';
     };
@@ -32,15 +31,43 @@ app.controller("AddressController", function ($scope, $http) {
         }
     };
 
+    $scope.resetForm = function () {
+        $scope.formData = {};
+
+        if ($scope.addressForm) {
+            $scope.addressForm.$setPristine();
+            $scope.addressForm.$setUntouched();
+        }
+    }
+
     // Save address
-    $scope.saveAddress = function () {
+    $scope.saveAddress = function (isValid) {
+        if (!isValid) {
+            alert("Please fix form errors before submitting.");
+            return;
+        }
         $http.post('/Address/SaveAddress', $scope.formData)
+            .then(function (response) {
+                if (response.data.success) {
+                    alert("Address saved successfully!");
+                    $scope.formData = {};
+                    $scope.resetForm();
+                } else {
+                    alert("Failed to save address.");
+                }
+            }, function (error) {
+                console.error(error);
+                alert("An error occurred while saving the address.");
+            });
+
+        /*$http.post('/Address/SaveAddress', $scope.formData)
             .then(function (response) {
                 alert("Address saved successfully!");
                 $scope.formData = {};
+                $scope.resetForm();
             }, function (error) {
                 alert("Error saving address.");
-            });
+            });*/
     };
 
     // Search addresses
@@ -53,6 +80,7 @@ app.controller("AddressController", function ($scope, $http) {
         }, function (err) {
             //$scope.searchPerformed = true;
             console.error(err);
+            alert("Error occurred during search.");
         });
     };
 
@@ -61,13 +89,12 @@ app.controller("AddressController", function ($scope, $http) {
             $http.post('/Address/DeleteAddress?id=' + id).then(function (res) {
                 if (res.data.success) {
                     alert("Deleted successfully!");
-                    $scope.searchAddresses();
+                    $scope.searchAddresses(); 
                 } else {
                     alert("Delete failed!");
                 }
             });
         }
     };
-
 
 });

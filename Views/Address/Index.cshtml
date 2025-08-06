@@ -30,74 +30,141 @@
         </style>
     </head>
     <body>
-
         <div class="container form-container">
             <h2 class="text-center text-primary">Add Your Address</h2>
 
-            <form name="addressForm" ng-submit="saveAddress()" >
+            <form name="addressForm" novalidate ng-submit="saveAddress(addressForm.$valid)">
 
                 <div class="row mb-3">
+
                     <div class="col-md-6">
-                        <label class="form-label">District
-                            <span style="color:red">*</span>
-                        </label>
-                        <select class="form-select" ng-model="formData.DistID" ng-options="d.DistID as d.DistrictName for d in districts" ng-change="loadCities()" required>
+                        <label class="form-label">District<span style="color:red">*</span></label>
+
+                        <select class="form-select"
+                                ng-model="formData.DistID"
+                                ng-options="d.DistID as d.DistrictName for d in districts"
+                                name="DistId"
+                                ng-change="loadCities()" required>
                             <option value="">-- Select District --</option>
                         </select>
+
+                        <div ng-show="addressForm.DistID.$touched && addressForm.DistID.$invalid" class="text-danger">District is required.</div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">City
-                            <span style="color:red">*</span>
-                        </label>
-                        <select class="form-select" ng-model="formData.CityID" ng-options="c.CityID as c.CityName for c in cities" required>
+                        <label class="form-label">City<span style="color:red">*</span></label>
+
+                        <select class="form-select"
+                                ng-model="formData.CityID"
+                                name="CityID"
+                                ng-options="c.CityID as c.CityName for c in cities" required>
                             <option value="">-- Select City --</option>
                         </select>
+
+                        <div ng-show="addressForm.CityID.$touched && addressForm.CityID.$invalid" class="text-danger">City is required.</div>
                     </div>
+
                 </div>
 
                 <div class="row mb-3">
+
                     <div class="col-md-6">
-                        <label class="form-label">Street Name
-                            <span style="color:red">*</span>
-                        </label>
-                        <input type="text" class="form-control" ng-model="formData.StreetName" required maxlength="50" placeholder="Enter Street Name in 50 words only"/>
+                        <label class="form-label">Street Name<span style="color:red">*</span></label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="StreetName"
+                               ng-model="formData.StreetName"
+                               ng-pattern="/^[a-zA-Z0-9\s\-\,\.]{3,50}$/"
+                               required
+                               placeholder="Enter Street Name"
+                               maxlength="50" />
+
+                        <div ng-show="addressForm.StreetName.$touched && addressForm.StreetName.$invalid" class="text-danger">
+                            <div ng-show="addressForm.StreetName.$error.required">Street name is required.</div>
+                            <div ng-show="addressForm.StreetName.$error.pattern">Invalid characters used in street name.</div>
+                        </div>
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Building Name</label>
-                        <input type="text" class="form-control" ng-model="formData.BuildingName" maxlength="20" placeholder="Enter your building name"/>
+
+                        <input type="text"
+                               class="form-control"
+                               name="BuildingName"
+                               ng-model="formData.BuildingName"
+                               ng-pattern="/^[a-zA-Z0-9\s\-\,\.]{3,20}$/"
+                               maxlength="20"
+                               placeholder="Enter your building name" />
+
+                        <div class="text-danger" ng-show="addressForm.BuildingName.$error.pattern">Invalid characters used in building name.</div>
                     </div>
+
                 </div>
 
                 <div class="row mb-3">
+
                     <div class="col-md-6">
-                        <label class="form-label">Landmark
-                            <small style="color:red">*</small>
-                        </label>
-                        <input type="text" class="form-control" ng-model="formData.LandMark" required maxlength="50" placeholder="Enter nearby famous place in 50 words only"/>
+                        <label class="form-label">Landmark <small style="color:red">*</small></label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="LandMark"
+                               ng-model="formData.LandMark"
+                               ng-pattern="/^[a-zA-Z0-9\s\-\,\.]{3,50}$/"
+                               required
+                               maxlength="50"
+                               placeholder="Enter nearby landmark" />
+
+                        <div ng-show="addressForm.LandMark.$touched && addressForm.LandMark.$invalid" class="text-danger">
+                            <div ng-show="addressForm.LandMark.$error.required">LandMark is required.</div>
+                            <div ng-show="addressForm.LandMark.$error.pattern">Invalid characters used in landmark.</div>
+                        </div>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Pin Code
-                            <small style="color:red">*</small>
-                        </label>
-                        <input type="text" class="form-control" ng-model="formData.PinCode" pattern="^4[4-9][0-9]{4}" required 
-                               placeholder="Pincode must start with 45 to 49 and be 6 digits long"/>
+                        <label class="form-label">Pin Code <small style="color:red">*</small></label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="PinCode"
+                               ng-model="formData.PinCode"
+                               ng-pattern="/^4[4-9][0-9]{4}$/"
+                               required
+                               maxlength="6"
+                               placeholder="Starts with 44 to 49, 6 digits" />
+
+                        <div ng-show="addressForm.PinCode.$touched && addressForm.PinCode.$invalid" class="text-danger">
+                            <div ng-show="addressForm.PinCode.$error.required">Pincode is required.</div>
+                            <div ng-show="addressForm.PinCode.$error.pattern">Invalid characters used in Pincode.</div>
+                        </div>
                     </div>
+
                 </div>
 
                 <div class="row mb-3">
+
                     <div class="col-md">
-                        <label class="form-label">Full Address
-                            <span style="color:red">*</span>
-                        </label>
-                        <textarea class="form-control" ng-model="formData.FullAddress" rows="3" required maxlength="100" placeholder="Enter your full address in maximum 100 words"></textarea>
-                    </div>   
+                        <label class="form-label">Full Address<span style="color:red">*</span></label>
+
+                        <textarea class="form-control"
+                                  name="FullAddress"
+                                  ng-model="formData.FullAddress"
+                                  rows="3"
+                                  required
+                                  maxlength="100"
+                                  placeholder="Enter your full address (max 100 characters)"> 
+                        </textarea>
+
+                        <div ng-show="addressForm.FullAddress.$touched && addressForm.FullAddress.$error.required" class="text-danger">
+                            Full Address is required.
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="d-flex justify-content-center gap-3 mt-4">
-                    <button type="submit" class="btn btn-primary px-4" >Save Address</button>
+                    <button type="submit" class="btn btn-primary px-4" ng-disabled="addressForm.$invalid">Save Address</button>
                     <button type="button" class="btn btn-secondary px-4" ng-click="resetForm()">Clear</button>
                     <a href="/Address/Search" class="btn btn-success px-4">Go to Search Page</a>
                 </div>

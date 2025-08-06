@@ -11,7 +11,6 @@ namespace SmartAddress.Controllers
 {
     public class AddressController : Controller
     {
-        // GET: Address
         public ActionResult Index()
         {
             return View();
